@@ -1,0 +1,12 @@
+.hangman {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  user-select: none;
+}
+
+.hangman .word {
+  font-weight: bold;
+  font-size: 3em;
+  margin-bottom: 1em;
+}
