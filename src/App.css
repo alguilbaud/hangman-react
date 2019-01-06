@@ -1,7 +1,7 @@
 .hangman {
   display: flex;
   flex-wrap: wrap;
-  width: 300px;
+  width: 75%;
   user-select: none;
 }
 

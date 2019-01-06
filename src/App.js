@@ -9,7 +9,8 @@ const ASCII_CODE_A = 65;
 class App extends Component {
   state = {
     alphabet: this.generateAlphabet(),
-    currentWord: this.selectWord()
+    currentWord: this.selectWord(),
+    selectedLetters: new Set(),
   }
 
   // Génère un tableau contenant l'alphabet de A à Z
@@ -27,23 +28,42 @@ class App extends Component {
     return diacritics.remove(randomWord).toUpperCase();
   }
 
+  // Produit une représentation textuelle de l’état de la partie,
+  // chaque lettre non découverte étant représentée par un _underscore_.
+  // (CSS assurera de l’espacement entre les lettres pour mieux
+  // visualiser le tout).
+  computeDisplay(phrase, usedLetters) {
+    return phrase.replace(/\w/g,
+      (letter) => (usedLetters.has(letter) ? letter : ' _ ')
+    )
+  }
+
+  isLetterSelected(letter, usedLetters) {
+    return usedLetters.has(letter)
+  }
+
   // Binding fleché
   handleKeyClick = letter => {
-    console.log(letter)
+    const {selectedLetters} = this.state
+    if (!this.isLetterSelected(letter, selectedLetters)) {
+      // La lettre n'a pas déjà été sélectionnée
+      selectedLetters.add(letter)
+    }
+    console.log(letter, selectedLetters)
   }
 
   render() {
-    const { alphabet, currentWord } = this.state
+    const { alphabet, currentWord, selectedLetters } = this.state
     return (
       <div className="hangman">
         <div className="word">
-          {currentWord}
+          {this.computeDisplay(currentWord, selectedLetters)}
         </div>
         <div className="keyboard">
           {alphabet.map((letter, index) => (
             <KeyboardKey 
               letter={letter}
-              isSelected={false}
+              isSelected={this.isLetterSelected(letter, selectedLetters)}
               onClick={this.handleKeyClick}
             />
           ))}
