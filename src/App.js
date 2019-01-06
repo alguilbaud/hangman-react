@@ -11,6 +11,7 @@ class App extends Component {
     alphabet: this.generateAlphabet(),
     currentWord: this.selectWord(),
     selectedLetters: new Set(),
+    displayedWord: null
   }
 
   // Génère un tableau contenant l'alphabet de A à Z
@@ -44,20 +45,21 @@ class App extends Component {
 
   // Binding fleché
   handleKeyClick = letter => {
-    const {selectedLetters} = this.state
+    const {selectedLetters, currentWord} = this.state
     if (!this.isLetterSelected(letter, selectedLetters)) {
       // La lettre n'a pas déjà été sélectionnée
       selectedLetters.add(letter)
+      this.setState({displayedWord : this.computeDisplay(currentWord, selectedLetters)})
     }
     console.log(letter, selectedLetters)
   }
 
   render() {
-    const { alphabet, currentWord, selectedLetters } = this.state
+    const { alphabet, currentWord, selectedLetters, displayedWord } = this.state
     return (
       <div className="hangman">
         <div className="word">
-          {this.computeDisplay(currentWord, selectedLetters)}
+          {displayedWord == null ? this.computeDisplay(currentWord, selectedLetters) : displayedWord}
         </div>
         <div className="keyboard">
           {alphabet.map((letter, index) => (
