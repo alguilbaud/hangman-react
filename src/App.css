@@ -9,4 +9,10 @@
   font-weight: bold;
   font-size: 3em;
   margin-bottom: 1em;
+  letter-spacing: 0.2em;
+  width: 100%;
+}
+
+.hangman input.restart {
+  font-size: 2em;
 }

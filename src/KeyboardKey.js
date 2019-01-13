@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 
 import './KeyboardKey.css'
 
-const SELECTED = 'selected'
+const SELECTED = ' selected'
 
 const KeyboardKey = ( {letter, isSelected, onClick }) => (
-    <div className={`key ${isSelected && SELECTED}`} onClick={() => onClick(letter)}>
+    <div className={`key${isSelected ? SELECTED : ""}`} onClick={() => onClick(letter)}>
         {letter}
     </div>
 )

@@ -12,3 +12,8 @@
     width: 1em;
     height: 1em;
 } 
+
+.hangman .keyboard .key.selected {
+    filter: opacity(30%);
+    cursor: not-allowed;
+}

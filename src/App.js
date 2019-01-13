@@ -14,6 +14,17 @@ class App extends Component {
     displayedWord: null
   }
 
+  // Réinitialise l'état de la partie
+  resetGame() {
+    this.setState(
+      {
+        currentWord: this.selectWord(),
+        selectedLetters: new Set(),
+        displayedWord: null
+      }
+    )
+  }
+
   // Génère un tableau contenant l'alphabet de A à Z
   generateAlphabet() {
     const alphabet = []
@@ -35,7 +46,7 @@ class App extends Component {
   // visualiser le tout).
   computeDisplay(phrase, usedLetters) {
     return phrase.replace(/\w/g,
-      (letter) => (usedLetters.has(letter) ? letter : ' _ ')
+      (letter) => (usedLetters.has(letter) ? letter : '_')
     )
   }
 
@@ -43,33 +54,35 @@ class App extends Component {
     return usedLetters.has(letter)
   }
 
-  // Binding fleché
+  // Binding fleché pour l'évenement au clic sur une lettre
+  // On ajoute la lettre à l'ensemble des lettres choisies et on recalcule le masque du mot affiché
   handleKeyClick = letter => {
     const {selectedLetters, currentWord} = this.state
-    if (!this.isLetterSelected(letter, selectedLetters)) {
-      // La lettre n'a pas déjà été sélectionnée
-      selectedLetters.add(letter)
-      this.setState({displayedWord : this.computeDisplay(currentWord, selectedLetters)})
-    }
-    console.log(letter, selectedLetters)
+
+    // Comme selectedLetters est un Set, pas besoin de vérifier si la lettre a déjà été cliquée
+    selectedLetters.add(letter)
+    this.setState({displayedWord : this.computeDisplay(currentWord, selectedLetters)})
+
+    console.log(letter, selectedLetters, currentWord)
   }
 
   render() {
     const { alphabet, currentWord, selectedLetters, displayedWord } = this.state
+    const won = currentWord === displayedWord
     return (
       <div className="hangman">
         <div className="word">
           {displayedWord == null ? this.computeDisplay(currentWord, selectedLetters) : displayedWord}
         </div>
         <div className="keyboard">
-          {alphabet.map((letter, index) => (
+          {!won && alphabet.map((letter, index) => (
             <KeyboardKey 
               letter={letter}
               isSelected={this.isLetterSelected(letter, selectedLetters)}
               onClick={this.handleKeyClick}
             />
           ))}
-
+          {won && <input type="button" className="restart" value="Rejouer ?" onClick={() => this.resetGame()} />}
         </div>
       </div>
     );
