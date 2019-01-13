@@ -5,6 +5,7 @@ import './KeyboardKey.css'
 
 const SELECTED = ' selected'
 
+// Composant représentant une touche du clavier du jeu
 const KeyboardKey = ( {letter, isSelected, onClick }) => (
     <div className={`key${isSelected ? SELECTED : ""}`} onClick={() => onClick(letter)}>
         {letter}

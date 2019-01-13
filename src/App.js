@@ -16,13 +16,11 @@ class App extends Component {
 
   // Réinitialise l'état de la partie
   resetGame() {
-    this.setState(
-      {
-        currentWord: this.selectWord(),
-        selectedLetters: new Set(),
-        displayedWord: null
-      }
-    )
+    this.setState({
+      currentWord: this.selectWord(),
+      selectedLetters: new Set(),
+      displayedWord: null
+    })
   }
 
   // Génère un tableau contenant l'alphabet de A à Z
@@ -62,8 +60,6 @@ class App extends Component {
     // Comme selectedLetters est un Set, pas besoin de vérifier si la lettre a déjà été cliquée
     selectedLetters.add(letter)
     this.setState({displayedWord : this.computeDisplay(currentWord, selectedLetters)})
-
-    console.log(letter, selectedLetters, currentWord)
   }
 
   render() {
@@ -75,14 +71,15 @@ class App extends Component {
           {displayedWord == null ? this.computeDisplay(currentWord, selectedLetters) : displayedWord}
         </div>
         <div className="keyboard">
-          {!won && alphabet.map((letter, index) => (
+          {won ? <input type="button" className="restart" value="Rejouer ?" onClick={() => this.resetGame()} /> : 
+          alphabet.map((letter, index) => (
             <KeyboardKey 
               letter={letter}
+              key={letter}
               isSelected={this.isLetterSelected(letter, selectedLetters)}
               onClick={this.handleKeyClick}
             />
           ))}
-          {won && <input type="button" className="restart" value="Rejouer ?" onClick={() => this.resetGame()} />}
         </div>
       </div>
     );
